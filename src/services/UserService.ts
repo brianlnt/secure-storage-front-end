@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { baseUrl, isJsonContentType, processError, processResponse } from '../utils/requestutils';
 import { IResponse } from '../models/IResponse';
 import { User } from '../models/IUser';
+import { IUserRequest } from '../models/ICredentials';
 
 export const userAPI = createApi({
     reducerPath: 'userAPI',
@@ -17,6 +18,15 @@ export const userAPI = createApi({
             transformResponse: processResponse<User>,
             transformErrorResponse: processError,
             providesTags: (result, error) => ['User']
+        }),
+        loginUser: builder.mutation<IResponse<User>, IUserRequest>({
+            query: (credentials) => ({
+                url: '/login',
+                method: 'POST',
+                body: credentials
+            }),
+            transformResponse: processResponse<User>,
+            transformErrorResponse: processError
         })
     }),
 });
