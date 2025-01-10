@@ -1,12 +1,23 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { userAPI } from '../services/UserService';
-import { IUserRequest } from '../models/ICredentials';
-import '../index.css';
+import { IUserRequest } from '../models/ICredentials'
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { IResponse } from '../models/IResponse';
+
+const schema = z.object({
+    email: z.string().min(3, 'Email is required').email('Invalid email'),
+    password: z.string().min(6, 'Password is required')
+})
 
 const Login = () => {
     const location = useLocation();
     const isLoggedIn: boolean = JSON.parse(localStorage.getItem('')!) as boolean || false;
     const [logginUser, { data, error, isLoading, isSuccess }] = userAPI.useLoginUserMutation();
+    const { register, handleSubmit, formState: form, getFieldState } = useForm<IUserRequest>({ resolver: zodResolver(schema), mode: 'onTouched' });
+
+    const isFieldValid = (fieldName: keyof IUserRequest): boolean => getFieldState(fieldName, form).isTouched && !getFieldState(fieldName, form).invalid;
 
     const handleLogin = (credentials: IUserRequest) => logginUser(credentials);
 
@@ -41,25 +52,26 @@ const Login = () => {
     
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
             <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-                <form>
+                {error && <div className="alert alert-dismissible alert-danger">
+                    {'data' in error ? (error.data as IResponse<void>).message : 'An error occurred'}
+                </div>}
+
+                <form onSubmit={handleSubmit(handleLogin)} className="needs-validation" noValidate>
                     <div>
-                        <label htmlFor="email" className="block text-sm font-medium leading-5  text-gray-700">Email address</label>
-                        <div className="mt-1 relative rounded-md shadow-sm">
-                            <input id="email" name="email" placeholder="user@example.com" type="email" required value="" className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5" />
-                            <div className="hidden absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                                <svg className="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                                        clip-rule="evenodd"></path>
-                                </svg>
-                            </div>
+                        <label htmlFor="email" className="form-label">Email address</label>
+                        <div className="input-group has-validation">
+                            <input {...register('email')} id="email" name="email" placeholder="user@example.com" type="email"  
+                            className={`form-control ' ${form.errors.email ? 'is-invalid' : ''} ${isFieldValid('email') ? 'is-valid' : ''}`} />
+                            <div className="invalid-feedback">{form.errors.email?.message}</div>
                         </div>
                     </div>
     
                     <div className="mt-6">
-                        <label htmlFor="password" className="block text-sm font-medium leading-5 text-gray-700">Password</label>
-                        <div className="mt-1 rounded-md shadow-sm">
-                            <input id="password" name="password" type="password" required className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5" />
+                        <label htmlFor="password" className="form-label">Password</label>
+                        <div className="input-group has-validation">
+                            <input {...register('password')} id="password" name="password" type="password"
+                            className={`form-control ' ${form.errors.password ? 'is-invalid' : ''} ${isFieldValid('password') ? 'is-valid' : ''}`} />
+                            <div className="invalid-feedback">{form.errors.password?.message}</div>
                         </div>
                     </div>
     
@@ -79,8 +91,8 @@ const Login = () => {
     
                     <div className="mt-6">
                         <span className="block w-full rounded-md shadow-sm">
-                <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
-                    Login
+                <button disabled={form.isSubmitting || isLoading} type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
+                    <span role="status">{(form.isSubmitting || isLoading) ? 'Loading...' : 'Login'}</span>
                 </button>
               </span>
                     </div>

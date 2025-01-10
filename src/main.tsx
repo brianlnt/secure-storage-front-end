@@ -4,6 +4,8 @@ import { Provider } from 'react-redux';
 import Login from './components/Login.tsx';
 import { setupStore } from './store/store.ts';
 import ReactDOM from 'react-dom/client';
+import './index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const store = setupStore();
 const router = createBrowserRouter(createRoutesFromElements(
