@@ -1,16 +1,21 @@
 import App from './App.tsx'
-import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterProvider } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import Login from './components/Login.tsx';
 import { setupStore } from './store/store.ts';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import NavBar from './components/NavBar.tsx';
+import Documents from './components/document/Documents.tsx';
 
 const store = setupStore();
 const router = createBrowserRouter(createRoutesFromElements(
   <Route path = '/' element = {<App />}>
     <Route path = 'login' element = {<Login />} />
+    <Route element={<NavBar />}>
+      <Route index path='/documents' element={<Documents />} />
+      <Route path='/' element={<Navigate to={'/documents'} />} />
+    </Route>
   </Route >
 ));
 
