@@ -1,8 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { baseUrl, isJsonContentType, processError, processResponse } from '../utils/requestutils';
 import { IResponse } from '../models/IResponse';
-import { User } from '../models/IUser';
+import { QrCodeRequest, User } from '../models/IUser';
 import { IUserRequest } from '../models/ICredentials';
+import { Http } from '../enum/http.method';
 
 export const userAPI = createApi({
     reducerPath: 'userAPI',
@@ -27,6 +28,16 @@ export const userAPI = createApi({
             }),
             transformResponse: processResponse<User>,
             transformErrorResponse: processError
+        }),
+        verifyQrCode: builder.mutation<IResponse<User>, QrCodeRequest>({
+            query: (qrCodeRequest) => ({
+                url: '/verify/qrcode',
+                method: Http.POST,
+                body: qrCodeRequest
+            }),
+            transformResponse: processResponse<User>,
+            transformErrorResponse: processError,
+            invalidatesTags: (result, error) => error ? [] : ['User']
         })
     }),
 });
