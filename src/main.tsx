@@ -7,11 +7,13 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import NavBar from './components/NavBar.tsx';
 import Documents from './components/document/Documents.tsx';
+import Register from './components/Register.tsx';
 
 const store = setupStore();
 const router = createBrowserRouter(createRoutesFromElements(
   <Route path = '/' element = {<App />}>
     <Route path = 'login' element = {<Login />} />
+    <Route path= 'register' element={<Register />} />
     <Route element={<NavBar />}>
       <Route index path='/documents' element={<Documents />} />
       <Route path='/' element={<Navigate to={'/documents'} />} />

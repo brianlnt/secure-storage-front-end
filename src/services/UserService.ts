@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { baseUrl, isJsonContentType, processError, processResponse } from '../utils/requestutils';
 import { IResponse } from '../models/IResponse';
 import { QrCodeRequest, User } from '../models/IUser';
-import { IUserRequest } from '../models/ICredentials';
+import { IRegisterRequest, IUserRequest } from '../models/ICredentials';
 import { Http } from '../enum/http.method';
 
 export const userAPI = createApi({
@@ -27,6 +27,15 @@ export const userAPI = createApi({
                 body: credentials
             }),
             transformResponse: processResponse<User>,
+            transformErrorResponse: processError
+        }),
+        registerUser: builder.mutation<IResponse<void>, IRegisterRequest>({
+            query: (registerRequest) => ({
+                url: '/register',
+                method: Http.POST,
+                body: registerRequest
+            }),
+            transformResponse: processResponse<void>,
             transformErrorResponse: processError
         }),
         verifyQrCode: builder.mutation<IResponse<User>, QrCodeRequest>({

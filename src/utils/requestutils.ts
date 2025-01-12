@@ -7,7 +7,7 @@ export const isJsonContentType = (headers: Headers) => ['application/vnd.api+jso
 
 export const processResponse =  <T>(response: IResponse<T>, meta: any, arg: unknown): IResponse<T> => {
     const { request } = meta;
-    if(request.url.includes('logout')) { localStorage.removeItem('token'); }
+    if(request.url.includes('logout')) { localStorage.removeItem('login'); }
     if(!request.url.includes('profile')) {
         // Show toast notification
     }
@@ -17,7 +17,7 @@ export const processResponse =  <T>(response: IResponse<T>, meta: any, arg: unkn
 
 export const processError = (error: { status: number; data: IResponse<void> }, meta: unknown, arg: unknown): { status: number; data: IResponse<void> } => {
     if(error.data.code === 401 && error.data.status === 'UNAUTHORIZED' && error.data.message === 'You are not logged in') {
-        localStorage.setItem("", "");
+        localStorage.setItem('login', 'false');
     }
     // Show toast notification
     console.log({ error });

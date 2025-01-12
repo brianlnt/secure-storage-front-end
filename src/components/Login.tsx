@@ -9,7 +9,7 @@ import { QrCodeRequest } from '../models/IUser';
 
 const loginSchema = z.object({
     email: z.string().min(3, 'Email is required').email('Invalid email'),
-    password: z.string().min(6, 'Password is required')
+    password: z.string().min(5, 'Password must be at least 5 characters'),
 })
 
 const qrCodeSchema = z.object({
@@ -40,7 +40,7 @@ const Login = () => {
 
     //This function handles the login form submission
     const handleLogin = (credentials: IUserRequest) => logginUser(credentials);
-    
+
     //This function handles the QR code verification form submission
     const onVerifyQrCode = async (qrCode: QrCodeRequest) => {
         qrCode = { ...qrCode, qrCode: `${qrCode.qrCode1}${qrCode.qrCode2}${qrCode.qrCode3}${qrCode.qrCode4}${qrCode.qrCode5}${qrCode.qrCode6}` };
@@ -158,7 +158,7 @@ const Login = () => {
             <p className="mt-2 text-center text-sm leading-5 text-blue-500 max-w">
                 <a href="#"
                     className="font-medium text-blue-500 hover:text-blue-500 focus:outline-none focus:underline transition ease-in-out duration-150">
-                    Or create a new acccount
+                    <Link to="/register" style={{ textDecoration: 'none' }}>Or Create an Account</Link>
                 </a>
             </p>
         </div>
@@ -167,13 +167,17 @@ const Login = () => {
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
             <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
                 {error && <div className="alert alert-dismissible alert-danger">
-                    {'data' in error ? (error.data as IResponse<void>).message : 'An error occurred'}
+                    {'data' in error ? (error.data as IResponse<void>).message! : 'An error occurred'}
                 </div>}
-
+                {isSuccess && <div className="alert alert-dismissible alert-success">
+                    {data.message}
+                </div>}
+                
                 <form onSubmit={handleSubmit(handleLogin)} className="needs-validation" noValidate>
                     <div>
                         <label htmlFor="email" className="form-label">Email address</label>
                         <div className="input-group has-validation">
+                            <span className="input-group-text"><i className="bi bi-envelope"></i></span>
                             <input {...register('email')} id="email" name="email" placeholder="user@example.com" type="email"  
                             className={`form-control ' ${form.errors.email ? 'is-invalid' : ''} ${isFieldValid('email') ? 'is-valid' : ''}`} />
                             <div className="invalid-feedback">{form.errors.email?.message}</div>
@@ -183,6 +187,7 @@ const Login = () => {
                     <div className="mt-6">
                         <label htmlFor="password" className="form-label">Password</label>
                         <div className="input-group has-validation">
+                            <span className="input-group-text"><i className="bi bi-key"></i></span>
                             <input {...register('password')} id="password" name="password" type="password"
                             className={`form-control ' ${form.errors.password ? 'is-invalid' : ''} ${isFieldValid('password') ? 'is-valid' : ''}`} />
                             <div className="invalid-feedback">{form.errors.password?.message}</div>
@@ -205,10 +210,11 @@ const Login = () => {
     
                     <div className="mt-6">
                         <span className="block w-full rounded-md shadow-sm">
-                <button disabled={form.isSubmitting || isLoading} type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
-                    <span role="status">{(form.isSubmitting || isLoading) ? 'Loading...' : 'Login'}</span>
-                </button>
-              </span>
+                            <button disabled={form.isSubmitting || isLoading} type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
+                                {(form.isSubmitting || isLoading) && <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>}
+                                <span role="status">{(form.isSubmitting || isLoading) ? 'Loading...' : 'Login'}</span>
+                            </button>
+                        </span>
                     </div>
                 </form>
     
