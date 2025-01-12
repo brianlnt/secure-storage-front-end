@@ -13,7 +13,7 @@ export const userAPI = createApi({
         fetchUser: builder.query<IResponse<User>, void>({
             query: () => ({
                 url: '/profile',
-                method: 'GET',
+                method: Http.GET,
             }),
             keepUnusedDataFor: 120,
             transformResponse: processResponse<User>,
@@ -23,7 +23,7 @@ export const userAPI = createApi({
         loginUser: builder.mutation<IResponse<User>, IUserRequest>({
             query: (credentials) => ({
                 url: '/login',
-                method: 'POST',
+                method: Http.POST,
                 body: credentials
             }),
             transformResponse: processResponse<User>,

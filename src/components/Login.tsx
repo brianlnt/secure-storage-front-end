@@ -25,16 +25,23 @@ const qrCodeSchema = z.object({
 const Login = () => {
     const location = useLocation();
     const isLoggedIn: boolean = JSON.parse(localStorage.getItem('login')!) as boolean || false;
+
+    //API mutation hooks for login and verifyQrCode API calls
     const [logginUser, { data, error, isLoading, isSuccess }] = userAPI.useLoginUserMutation();
     const [verifyQrCode, { data: qrCodeData, error: qrCodeError, isLoading: qrCodeLoading, isSuccess: qrCodeSuccess }] = userAPI.useVerifyQrCodeMutation();
+    
+    //Form Handling
     const { register, handleSubmit, formState: form, getFieldState } = useForm<IUserRequest>({ resolver: zodResolver(loginSchema), mode: 'onTouched' });
     const { register: qrCodeRegister, handleSubmit: qrCodeHandleSubmit, formState: qrCodeForm, getFieldState: getQrCodeField } = useForm<QrCodeRequest>({ resolver: zodResolver(qrCodeSchema), mode: 'onTouched' });
 
+    //Field Validation
     const isFieldValid = (fieldName: keyof IUserRequest): boolean => getFieldState(fieldName, form).isTouched && !getFieldState(fieldName, form).invalid;
     const isQrCodeFieldValid = (fieldName: keyof QrCodeRequest): boolean => getQrCodeField(fieldName, qrCodeForm).isTouched && !getQrCodeField(fieldName, qrCodeForm).invalid;
 
+    //This function handles the login form submission
     const handleLogin = (credentials: IUserRequest) => logginUser(credentials);
-
+    
+    //This function handles the QR code verification form submission
     const onVerifyQrCode = async (qrCode: QrCodeRequest) => {
         qrCode = { ...qrCode, qrCode: `${qrCode.qrCode1}${qrCode.qrCode2}${qrCode.qrCode3}${qrCode.qrCode4}${qrCode.qrCode5}${qrCode.qrCode6}` };
         await verifyQrCode(qrCode);
