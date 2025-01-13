@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { baseUrl, isJsonContentType, processError, processResponse } from '../utils/requestutils';
 import { IResponse } from '../models/IResponse';
 import { QrCodeRequest, User } from '../models/IUser';
-import { IRegisterRequest, IUserRequest } from '../models/ICredentials';
+import { EmailAddress, IRegisterRequest, IUserRequest, UpdateNewPassword } from '../models/ICredentials';
 import { Http } from '../enum/http.method';
 
 export const userAPI = createApi({
@@ -55,6 +55,35 @@ export const userAPI = createApi({
             transformResponse: processResponse<User>,
             transformErrorResponse: processError,
             invalidatesTags: (result, error) => error ? [] : ['User']
-        })
+        }),
+        verifyPassword: builder.mutation<IResponse<User>, string>({
+            query: (key) => ({
+                url: `/verify/password?key=${key}`,
+                method: Http.GET
+            }),
+            transformResponse: processResponse<User>,
+            transformErrorResponse: processError,
+            invalidatesTags: (result, error) => error ? [] : ['User']
+        }),
+        resetPassword: builder.mutation<IResponse<void>, EmailAddress>({
+            query: (email) => ({
+                url: '/resetpassword',
+                method: Http.POST,
+                body: email
+            }),
+            transformResponse: processResponse<void>,
+            transformErrorResponse: processError,
+            invalidatesTags: (result, error) => error ? [] : ['User']
+        }),
+        doResetPassword: builder.mutation<IResponse<void>, UpdateNewPassword>({
+            query: (passwordrequest) => ({
+                url: `/resetpassword/reset`,
+                method: Http.POST,
+                body: passwordrequest
+            }),
+            transformResponse: processResponse<void>,
+            transformErrorResponse: processError,
+            invalidatesTags: (result, error) => error ? [] : ['User']
+        }),
     }),
 });

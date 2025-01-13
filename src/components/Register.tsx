@@ -54,7 +54,7 @@ const Register = () => {
 
                 <form onSubmit={handleSubmit(handleRegister)} className="needs-validation" noValidate>
                     <div>
-                        <label htmlFor="firstName" className="block text-sm font-medium leading-5  text-gray-700">First Name</label>
+                        <label htmlFor="firstName" className="form-label">First Name</label>
                         <div className="input-group has-validation">
                             <span className="input-group-text"><i className="bi bi-person-vcard"></i></span>
                             <input type="text" {...register('firstName')} name='firstName' className={`form-control ' ${formState.errors.firstName ? 'is-invalid' : ''} ${isFieldValid('firstName') ? 'is-valid' : ''}`} id="firstName" placeholder="Thinh" disabled={isLoading} required />
@@ -63,7 +63,7 @@ const Register = () => {
                     </div>
 
                     <div className="mt-6">
-                        <label htmlFor="lastName" className="block text-sm font-medium leading-5  text-gray-700">Last Name</label>
+                        <label htmlFor="lastName" className="form-label">Last Name</label>
                         <div className="input-group has-validation">
                             <span className="input-group-text"><i className="bi bi-person-vcard"></i></span>
                             <input type="text" {...register('lastName')} name='lastName' className={`form-control ' ${formState.errors.lastName ? 'is-invalid' : ''} ${isFieldValid('lastName') ? 'is-valid' : ''}`} id="lastName" placeholder="Le" disabled={isLoading} required />
