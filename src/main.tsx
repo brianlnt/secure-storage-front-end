@@ -12,6 +12,7 @@ import VerifyAccount from './components/VerifyAccount.tsx';
 import ResetPassword from './components/ResetPassword.tsx';
 import VerifyPassword from './components/VerifyPassword.tsx';
 import ProtectedRoute from './components/ProtectedRoute.tsx';
+import Restricted from './components/Restricted.tsx';
 
 const store = setupStore();
 const router = createBrowserRouter(createRoutesFromElements(
@@ -25,6 +26,9 @@ const router = createBrowserRouter(createRoutesFromElements(
       <Route element={<NavBar />}>
         <Route index path='/documents' element={<Documents />} />
         <Route path='/' element={<Navigate to={'/documents'} />} />
+        <Route element={<Restricted />} >
+          <Route path='users' element={null} />
+        </Route>
       </Route>
     </Route>
   </Route >
