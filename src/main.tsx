@@ -21,22 +21,23 @@ import Authorization from './components/profile/Authorization.tsx';
 import Authentication from './components/profile/Authentication.tsx';
 import NotFound from './components/NotFound.tsx';
 import DocumentDetails from './components/document/DocumentDetails.tsx';
+import Users from './components/users/Users.tsx';
 
 const store = setupStore();
 const router = createBrowserRouter(createRoutesFromElements(
-  <Route path='/' element = {<App />}>
-    <Route path='login' element = {<Login />} />
+  <Route path='/' element={<App />}>
+    <Route path='login' element={<Login />} />
     <Route path='register' element={<Register />} />
+    <Route path='resetpassword' element={<ResetPassword />} />
     <Route path='user/verify/account' element={<VerifyAccount />} />
     <Route path='user/verify/password' element={<VerifyPassword />} />
-    <Route path='resetpassword' element={<ResetPassword />} />
     <Route element={<ProtectedRoute />} >
       <Route element={<NavBar />}>
         <Route index path='/documents' element={<Documents />} />
         <Route path='/' element={<Navigate to={'/documents'} />} />
         <Route path='documents/:documentId' element={<DocumentDetails />} />
         <Route element={<Restricted />} >
-          <Route path='users' element={null} />
+          <Route path='users' element={<Users />} />
         </Route>
         <Route path='/user' element={<User />} >
           <Route path='/user' element={<Navigate to='/user/profile' />} />
@@ -49,7 +50,7 @@ const router = createBrowserRouter(createRoutesFromElements(
       </Route>
     </Route>
     <Route path='*' element={<NotFound />} />
-  </Route >
+  </Route>
 ));
 
 const root = ReactDOM.createRoot(document.getElementById('root')!);
