@@ -20,7 +20,7 @@ const User = () => {
 
   return (
     <div className="container main">
-      <div className="row">
+      <div className="row my-20">
         {isLoading &&
           <div className="col-lg-3 col-md-5 col-sm-12">
             <div className="card text-center mb-3">
