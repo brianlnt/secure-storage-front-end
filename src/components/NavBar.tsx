@@ -1,9 +1,8 @@
-import { NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { NavLink, Outlet } from 'react-router-dom'
 import { userAPI } from '../services/UserService';
 
 const NavBar = () => {
-    const { data: user, error, isLoading, refetch } = userAPI.useFetchUserQuery();
-    const navigate = useNavigate();
+    const { data: user, isLoading } = userAPI.useFetchUserQuery();
 
     const onLogout = async () => {};
     

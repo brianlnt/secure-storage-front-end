@@ -1,6 +1,6 @@
 import React from 'react'
 import { userAPI } from '../../services/UserService';
-import { IRegisterRequest, UpdatePassword } from '../../models/ICredentials';
+import { UpdatePassword } from '../../models/ICredentials';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -22,8 +22,8 @@ const schema = z.object({
 
 const Password = () => {
   const { register, handleSubmit, reset, formState: form, getFieldState } = useForm<UpdatePassword>({ resolver: zodResolver(schema), mode: 'onTouched' });
-  const { data: user, error, isSuccess, isLoading, refetch } = userAPI.useFetchUserQuery();
-  const [updatePassword, { data: updateData, isLoading: updateLoading, isSuccess: updateSuccess }] = userAPI.useUpdatePasswordMutation();
+  const { isSuccess, isLoading } = userAPI.useFetchUserQuery();
+  const [updatePassword, { isLoading: updateLoading, isSuccess: updateSuccess }] = userAPI.useUpdatePasswordMutation();
 
   const isFieldValid = (fieldName: keyof UpdatePassword): boolean => getFieldState(fieldName, form).isTouched && !getFieldState(fieldName, form).invalid;
 

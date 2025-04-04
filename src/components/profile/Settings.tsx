@@ -3,7 +3,7 @@ import { userAPI } from '../../services/UserService';
 import Loader from './Loader';
 
 const Settings = () => {
-  const { data: user, error, isSuccess, isLoading, refetch } = userAPI.useFetchUserQuery();
+  const { data: user, isSuccess, isLoading } = userAPI.useFetchUserQuery();
   const [toggleAccountExpired] = userAPI.useToggleAccountExpiredMutation();
   const [toggleAccountLocked] = userAPI.useToggleAccountLockedMutation();
   const [toggleAccountEnabled] = userAPI.useToggleAccountEnabledMutation();

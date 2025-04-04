@@ -28,7 +28,7 @@ const Login = () => {
 
     //API mutation hooks for login and verifyQrCode API calls
     const [logginUser, { data, error, isLoading, isSuccess }] = userAPI.useLoginUserMutation();
-    const [verifyQrCode, { data: qrCodeData, error: qrCodeError, isLoading: qrCodeLoading, isSuccess: qrCodeSuccess }] = userAPI.useVerifyQrCodeMutation();
+    const [verifyQrCode, { error: qrCodeError, isLoading: qrCodeLoading, isSuccess: qrCodeSuccess }] = userAPI.useVerifyQrCodeMutation();
     
     //Form Handling
     const { register, handleSubmit, formState: form, getFieldState } = useForm<IUserRequest>({ resolver: zodResolver(loginSchema), mode: 'onTouched' });

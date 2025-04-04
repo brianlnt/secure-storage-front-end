@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { IRegisterRequest } from '../../models/ICredentials';
@@ -16,8 +16,8 @@ const schema = z.object({
 
 const Profile = () => {
   const { register, handleSubmit, formState: form, getFieldState } = useForm<IRegisterRequest>({ resolver: zodResolver(schema), mode: 'onTouched' });
-  const { data: user, error, isSuccess, isLoading, refetch } = userAPI.useFetchUserQuery();
-  const [update, { data: updateData, isLoading: updateLoading }] = userAPI.useUpdateUserMutation();
+  const { data: user, isSuccess, isLoading } = userAPI.useFetchUserQuery();
+  const [update, { isLoading: updateLoading }] = userAPI.useUpdateUserMutation();
 
   const updateUser = async (user: IRegisterRequest) => await update(user);
 

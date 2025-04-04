@@ -3,8 +3,8 @@ import { Role } from '../../models/IUser';
 import Loader from './Loader';
 
 const Authorization = () => {
-  const { data: user, error, isSuccess, isLoading, refetch } = userAPI.useFetchUserQuery();
-  const [updateRole, { data: roleData, isLoading: updateLoading, isSuccess: updateSuccess }] = userAPI.useUpdateRoleMutation();
+  const { data: user, isSuccess, isLoading } = userAPI.useFetchUserQuery();
+  const [updateRole, { isLoading: updateLoading }] = userAPI.useUpdateRoleMutation();
 
   const onUpdateRole = async (role: Role) => await updateRole(role);
 

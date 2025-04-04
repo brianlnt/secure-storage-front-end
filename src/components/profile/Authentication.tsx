@@ -2,8 +2,8 @@ import { userAPI } from '../../services/UserService';
 import Loader from './Loader';
 
 const Authentication = () => {
-  const { data: user, error, isSuccess, isLoading, refetch } = userAPI.useFetchUserQuery();
-  const [enableMfa, { data: qrData, isLoading: enableLoading, isSuccess: qrCodeSuccess }] = userAPI.useEnableMfaMutation();
+  const { data: user, isSuccess, isLoading } = userAPI.useFetchUserQuery();
+  const [enableMfa, { isLoading: enableLoading, isSuccess: qrCodeSuccess }] = userAPI.useEnableMfaMutation();
   const [disableMfa, { isLoading: disableLoading }] = userAPI.useDisableMfaMutation();
 
   const toggleMfa = async () => {

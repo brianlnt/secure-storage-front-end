@@ -7,7 +7,7 @@ const VerifyAccount = () => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const key = searchParams.get('key');
-    const [verifyAccount, { data: accountData, error: accountError, isLoading: accountLoading, isSuccess: accountSuccess }] = userAPI.useVerifyAccountMutation();
+    const [verifyAccount, { error: accountError, isSuccess: accountSuccess }] = userAPI.useVerifyAccountMutation();
 
     React.useEffect(() => {
         if (key && location.pathname.includes('/verify/account')) {

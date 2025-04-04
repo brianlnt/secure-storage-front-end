@@ -4,8 +4,8 @@ import { NavLink, Outlet } from 'react-router-dom';
 
 const User = () => {
   const inputRef = React.useRef<HTMLInputElement>(null);
-  const { data: userData, error, isSuccess, isLoading, refetch } = userAPI.useFetchUserQuery();
-  const [updatePhoto, { data: photoData, error: photoError, isLoading: photoLoading, isSuccess: photoSuccess }] = userAPI.useUpdatePhotoMutation();
+  const { data: userData, isSuccess, isLoading } = userAPI.useFetchUserQuery();
+  const [updatePhoto, { isLoading: photoLoading }] = userAPI.useUpdatePhotoMutation();
 
   const selectImage = () => inputRef.current.click();
 

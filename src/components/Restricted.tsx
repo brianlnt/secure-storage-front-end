@@ -2,7 +2,7 @@ import { Link, Outlet } from 'react-router-dom';
 import { userAPI } from '../services/UserService';
 
 const Restricted = () => {
-    const { data: userData, error, isLoading, refetch } = userAPI.useFetchUserQuery(undefined, { refetchOnMountOrArgChange: true });
+    const { data: userData, isLoading } = userAPI.useFetchUserQuery(undefined, { refetchOnMountOrArgChange: true });
 
     if (isLoading || !userData) {
         return (
