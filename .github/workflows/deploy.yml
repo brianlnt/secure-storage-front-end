@@ -37,4 +37,4 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: us-east-1  # Replace with your desired region
         run: |
-          aws s3 sync ./dist s3://secure-storage-front-end --delete --cache-control "max-age=31536000"
+          aws s3 sync ./dist s3://secure-storage-front-end --delete --cache-control ""no-cache, no-store, must-revalidate""
